@@ -26,18 +26,19 @@ Podman Tinc
 
 1.  **Clone the repository:**
     ```sh
-    git clone https://github.com/your-username/podman-tinc.git
-    cd podman-tinc
+    git clone https://github.com/PhilippGoecke/PodmanTinc.git
+    cd PodmanTinc
     ```
 
 2.  **Configure your node:**
-    - Edit the `tinc/tinc.conf` to set your node's name.
-    - Edit the `tinc/hosts/` files to define your network peers.
+    - Edit the `Containerfile` to set your node's name and settings.
+    - Place the host files for each peer you want to connect with into the `tinc/hosts/` directory.
 
-3.  **Build the container image:**
-    ```sh
-    podman build -t podman-tinc .
-    ```
+3.  **Build & Run the container image:**
+        - A helper script `podman-run-tinc.bash` is provided to run the container with the correct parameters. Review the script and customize it if needed.
+        ```sh
+        ./podman-run-tinc.bash
+        ```
 
 ## 🚀 Usage
 
