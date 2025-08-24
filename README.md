@@ -1,6 +1,6 @@
 # PodmanTinc
 Podman Tinc
-> Run a secure and decentralized Tinc VPN using Podman containers. 🌐
+> Run a secure and decentralized [Tinc VPN](https://tinc-vpn.org/) using Podman containers. 🌐
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/user/podman-tinc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -35,10 +35,10 @@ Podman Tinc
     - Place the host files for each peer you want to connect with into the `tinc/hosts/` directory.
 
 3.  **Build & Run the container image:**
-        - A helper script `podman-run-tinc.bash` is provided to run the container with the correct parameters. Review the script and customize it if needed.
-        ```sh
-        ./podman-run-tinc.bash
-        ```
+    - A helper script `podman-run-tinc.bash` is provided to run the container with the correct parameters. Review the script and customize it if needed.
+    ```sh
+    bash podman-run-tinc.bash
+    ```
 
 ## 🚀 Usage
 
