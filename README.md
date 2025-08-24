@@ -35,11 +35,13 @@ Podman Tinc
     - Place the host files for each peer you want to connect with into the `./hosts/` directory.
 
 3.  **Build & Run the container image:**
-    - A helper script `podman-run-tinc.bash` is provided to run the container with the correct parameters. Review the script and customize it if needed.
-    ```sh
-    bash podman-run-tinc.bash
-    ```
-    - share the public key of this Node with the other Peers
+    A helper script, `podman-run-tinc.bash`, is provided to build the image and run the container with the correct parameters. Review the script and customize it if needed.
+        ```bash
+        bash podman-run-tinc.bash
+        ```
+4.  **Share your public key:**
+    - After the build, the container will generate and output a public key.
+    - Share this public key with the other peers in your network by adding it to their `./hosts/` directories.
 
 ## 🚀 Usage
 
