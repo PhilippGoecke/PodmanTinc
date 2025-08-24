@@ -32,13 +32,14 @@ Podman Tinc
 
 2.  **Configure your node:**
     - Edit the `Containerfile` to set your node's name and settings.
-    - Place the host files for each peer you want to connect with into the `tinc/hosts/` directory.
+    - Place the host files for each peer you want to connect with into the `./hosts/` directory.
 
 3.  **Build & Run the container image:**
     - A helper script `podman-run-tinc.bash` is provided to run the container with the correct parameters. Review the script and customize it if needed.
     ```sh
     bash podman-run-tinc.bash
     ```
+    - share the public key of this Node with the other Peers
 
 ## 🚀 Usage
 
