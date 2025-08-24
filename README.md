@@ -2,7 +2,7 @@
 Podman Tinc
 > Run a secure and decentralized [Tinc VPN](https://tinc-vpn.org/) using Podman containers. 🌐
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/user/podman-tinc)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/PhilippGoecke/PodmanTin)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
