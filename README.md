@@ -43,6 +43,15 @@ Podman Tinc
     - After the build, the container will generate and output a public key.
     - Share this public key with the other peers in your network by adding it to their `./hosts/` directories.
 
+## ❗ Error Handling
+
+cannot access '/dev/net/tun':
+```bash
+mkdir -p /dev/net
+mknod /dev/net/tun c 10 200
+chmod 600 /dev/net/tun
+```
+
 ## 🚀 Usage
 
 ### Start the VPN Node
