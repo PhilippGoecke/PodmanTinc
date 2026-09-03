@@ -6,9 +6,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt update && apt upgrade -y \
   # install ip tools
-  && apt install -y --no-install-recommends iproute2 \
+  && apt install -y --no-install-recommends --no-install-suggests iproute2 \
   # install tinc
-  && apt install -y --no-install-recommends tinc \
+  && apt install -y --no-install-recommends --no-install-suggests tinc
 
 ARG ThisClientName="podman"
 ARG ThisClientAddress="podman.dyndns.tld"
