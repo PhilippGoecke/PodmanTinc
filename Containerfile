@@ -14,8 +14,8 @@ ARG ThisClientName="podman"
 ARG ThisClientAddress="podman.dyndns.tld"
 ENV VPNName="yourtincvpnname"
 ARG VPNPeers="remotetincname1 remotetincname2"
-ARG VPNSubnet="10.0.0.0/24"
-ARG ThisClientUniqueVpnIp="10.0.0.42"
+ARG VPNSubnet="10.11.21.0/24"
+ARG ThisClientUniqueVpnIp="10.11.21.42"
 
 RUN groupadd -r tinc && useradd -r -g tinc tinc
 
