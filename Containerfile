@@ -55,6 +55,6 @@ RUN setcap cap_net_bind_service,cap_net_admin+ep /usr/sbin/tincd
 
 USER tinc
 
-EXPOSE 655/udp
+EXPOSE 655/tcp 655/udp
 
 CMD ["sh", "-c", "exec tincd -n \"$VPNName\" --pidfile=/run/tinc/tinc.$VPNName.pid --debug=3 -D"]
