@@ -12,7 +12,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 ARG ThisClientName="podman"
 ARG ThisClientAddress="podman.dyndns.tld"
-ENV VPNName="yourtincvpnname"
+ARG VPN_NETWORK="yourtincvpnname"
+ENV VPNName=$VPN_NETWORK
 ARG VPNPeers="remotetincname1 remotetincname2"
 ARG VPNSubnet="10.11.21.0/24"
 ARG ThisClientUniqueVpnIp="10.11.21.42"
