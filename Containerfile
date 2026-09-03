@@ -48,10 +48,12 @@ RUN chown -R tinc:tinc "/etc/tinc/$VPNName" \
 # allow tincd to bind to port 655 (<1024) and manage the tun device as non-root
 RUN setcap cap_net_bind_service,cap_net_admin+ep /usr/sbin/tincd
 
-USER tinc
 RUN tincd -n "$VPNName" -K4096 \
+  && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/hosts/$ThisClientName" \
   && chmod 600 "/etc/tinc/$VPNName/rsa_key.priv" \
   && cat "/etc/tinc/$VPNName/hosts/$ThisClientName"
+
+USER tinc
 
 EXPOSE 655/udp
 
