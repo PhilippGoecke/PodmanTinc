@@ -9,6 +9,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   && apt install -y --no-install-recommends --no-install-suggests iproute2 \
   # install tinc
   && apt install -y --no-install-recommends --no-install-suggests tinc \
+  # install setcap to allow binding privileged ports as non-root
+  && apt install -y --no-install-recommends --no-install-suggests libcap2-bin \
   # clean up apt lists not covered by cache mounts
   && rm -rf /tmp/* /var/tmp/*
 
@@ -42,6 +44,9 @@ RUN chown -R tinc:tinc "/etc/tinc/$VPNName" \
   && echo "#!/bin/sh\nip route del $VPNSubnet dev \$INTERFACE\nip addr del $ThisClientUniqueVpnIp/32 dev \$INTERFACE\nip link set \$INTERFACE down" > "/etc/tinc/$VPNName/tinc-down" \
   && chmod 750 "/etc/tinc/$VPNName/tinc-down" \
   && chown tinc:tinc "/etc/tinc/$VPNName/tinc-up" "/etc/tinc/$VPNName/tinc-down"
+
+# allow tincd to bind to port 655 (<1024) and manage the tun device as non-root
+RUN setcap cap_net_bind_service,cap_net_admin+ep /usr/sbin/tincd
 
 USER tinc
 RUN tincd -n "$VPNName" -K4096 \
