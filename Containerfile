@@ -45,13 +45,13 @@ RUN chown -R tinc:tinc "/etc/tinc/$VPNName" \
   && chmod 750 "/etc/tinc/$VPNName/tinc-down" \
   && chown tinc:tinc "/etc/tinc/$VPNName/tinc-up" "/etc/tinc/$VPNName/tinc-down"
 
-# allow tincd to bind to port 655 (<1024) and manage the tun device as non-root
-RUN setcap cap_net_bind_service,cap_net_admin+ep /usr/sbin/tincd
-
 RUN tincd -n "$VPNName" -K4096 \
   && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/hosts/$ThisClientName" \
   && chmod 600 "/etc/tinc/$VPNName/rsa_key.priv" \
   && cat "/etc/tinc/$VPNName/hosts/$ThisClientName"
+
+# allow tincd to bind to port 655 (<1024) and manage the tun device as non-root
+RUN setcap cap_net_bind_service,cap_net_admin+ep /usr/sbin/tincd
 
 USER tinc
 
