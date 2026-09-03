@@ -21,7 +21,7 @@ ARG ThisClientUniqueVpnIp="10.11.21.42"
 RUN groupadd -r tinc && useradd -r -g tinc tinc
 
 RUN mkdir "/etc/tinc/$VPNName" \
-  && mkdir "/etc/tinc/$VPNName/tinc"
+  && mkdir "/etc/tinc/$VPNName/hosts"
 
 COPY ./hosts/* "/etc/tinc/$VPNName/hosts/"
 RUN echo "Name = $ThisClientName\nDevice = /dev/net/tun\nInterface = VPN\nDeviceType = tap\nMode = router" > /etc/tinc/$VPNName/tinc.conf && \
