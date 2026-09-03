@@ -22,7 +22,10 @@ ARG ThisClientUniqueVpnIp="10.11.21.42"
 
 RUN groupadd -r tinc && useradd -r -g tinc -s /usr/sbin/nologin -d /nonexistent tinc
 
-RUN mkdir -p "/etc/tinc/$VPNName/hosts"
+RUN mkdir -p "/etc/tinc/$VPNName/hosts" \
+  && mkdir -p /run/tinc \
+  && chown tinc:tinc /run/tinc \
+  && chmod 750 /run/tinc
 
 COPY --chown=tinc:tinc ./hosts/* "/etc/tinc/$VPNName/hosts/"
 RUN echo "Name = $ThisClientName\nDevice = /dev/net/tun\nInterface = VPN\nDeviceType = tap\nMode = router" > /etc/tinc/$VPNName/tinc.conf && \
@@ -47,4 +50,4 @@ RUN tincd -n "$VPNName" -K4096 \
 
 EXPOSE 655/udp
 
-CMD ["sh", "-c", "exec tincd -n \"$VPNName\" --debug=3 -D"]
+CMD ["sh", "-c", "exec tincd -n \"$VPNName\" --pidfile=/run/tinc/tinc.$VPNName.pid --debug=3 -D"]
