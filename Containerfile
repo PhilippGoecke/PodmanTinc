@@ -45,9 +45,19 @@ RUN chown -R tinc:tinc "/etc/tinc/$VPNName" \
   && chmod 750 "/etc/tinc/$VPNName/tinc-down" \
   && chown tinc:tinc "/etc/tinc/$VPNName/tinc-up" "/etc/tinc/$VPNName/tinc-down"
 
-RUN tincd -n "$VPNName" -K4096 \
-  && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/hosts/$ThisClientName" \
+# copy existing keys/config if present, otherwise generate new certificates
+COPY --chown=tinc:tinc ./$VPNName/ /tmp/tinc-existing/
+RUN if [ -f "/tmp/tinc-existing/rsa_key.priv" ]; then \
+    cp /tmp/tinc-existing/rsa_key.priv "/etc/tinc/$VPNName/rsa_key.priv"; \
+    [ -f "/tmp/tinc-existing/tinc.conf" ] && cp /tmp/tinc-existing/tinc.conf "/etc/tinc/$VPNName/tinc.conf"; \
+    [ -f "/tmp/tinc-existing/hosts/$ThisClientName" ] && cp "/tmp/tinc-existing/hosts/$ThisClientName" "/etc/tinc/$VPNName/hosts/$ThisClientName"; \
+  else \
+    tincd -n "$VPNName" -K4096; \
+  fi \
+  && rm -rf /tmp/tinc-existing \
+  && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/hosts/$ThisClientName" "/etc/tinc/$VPNName/tinc.conf" \
   && chmod 600 "/etc/tinc/$VPNName/rsa_key.priv" \
+  && chmod 640 "/etc/tinc/$VPNName/tinc.conf" \
   && cat "/etc/tinc/$VPNName/hosts/$ThisClientName"
 
 # allow tincd to bind to port 655 (<1024) and manage the tun device as non-root
