@@ -64,7 +64,8 @@ RUN if [ -f "/tmp/tinc-existing/rsa_key.priv" ]; then \
     done; \
   fi \
   && rm -rf /tmp/tinc-existing \
-  && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/tinc.conf" "/etc/tinc/$VPNName/hosts/$ThisClientName"  "/etc/tinc/$VPNName/hosts/*" \
+  && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/tinc.conf" "/etc/tinc/$VPNName/hosts/$ThisClientName" \
+  && chown -R tinc:tinc "/etc/tinc/$VPNName/hosts/" \
   && chmod 600 "/etc/tinc/$VPNName/rsa_key.priv" \
   && chmod 640 "/etc/tinc/$VPNName/tinc.conf" \
   && cat "/etc/tinc/$VPNName/hosts/$ThisClientName"
