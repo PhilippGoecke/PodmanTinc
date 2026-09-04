@@ -32,7 +32,7 @@ RUN mkdir -p "/etc/tinc/$VPNName/hosts" \
   && chmod 750 /run/tinc
 
 COPY --chown=tinc:tinc ./hosts/* "/etc/tinc/$VPNName/hosts/"
-RUN echo "Name = $ThisClientName\nDevice = /dev/net/tun\nInterface = VPN\n#DeviceType = tap\nMode = router" > /etc/tinc/$VPNName/tinc.conf && \
+RUN echo "Name = $ThisClientName\nDevice = /dev/net/tun\nInterface = VPN\n#DeviceType = tap\nMode = router\nAddressFamily = any\nBindToAddress = * 655" > /etc/tinc/$VPNName/tinc.conf && \
   for peer in $VPNPeers; do \
     echo "ConnectTo = $peer" >> /etc/tinc/$VPNName/tinc.conf; \
   done
