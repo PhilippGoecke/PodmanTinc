@@ -15,7 +15,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   && rm -rf /tmp/* /var/tmp/*
 
 ARG ThisClientName="podman"
+ENV ThisClientName=$ThisClientName
 ARG ThisClientAddress="podman.dyndns.tld"
+ENV ThisClientAddress=$ThisClientAddress
 ARG VPN_NETWORK="yourtincvpnname"
 ENV VPNName=$VPN_NETWORK
 ARG VPNPeers="remotetincname1 remotetincname2"
@@ -56,7 +58,7 @@ RUN if [ -f "/tmp/tinc-existing/rsa_key.priv" ]; then \
   fi \
   && if [ -d "/tmp/tinc-existing/hosts" ]; then \
     for f in /tmp/tinc-existing/hosts/*; do \
-      [ "$(basename "$f")" != "$ThisClientName" ] && cp "$f" "/etc/tinc/$VPNName/hosts/"; \
+      [ "$(basename '$f')" != "$ThisClientName" ] && cp "$f" "/etc/tinc/$VPNName/hosts/"; \
     done; \
   fi \
   && rm -rf /tmp/tinc-existing \
