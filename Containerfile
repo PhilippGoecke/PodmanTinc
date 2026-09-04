@@ -54,6 +54,11 @@ RUN if [ -f "/tmp/tinc-existing/rsa_key.priv" ]; then \
   else \
     tincd -n "$VPNName" -K4096; \
   fi \
+  && if [ -d "/tmp/tinc-existing/hosts" ]; then \
+    for f in /tmp/tinc-existing/hosts/*; do \
+      [ "$(basename "$f")" != "$ThisClientName" ] && cp "$f" "/etc/tinc/$VPNName/hosts/"; \
+    done; \
+  fi \
   && rm -rf /tmp/tinc-existing \
   && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/hosts/$ThisClientName" "/etc/tinc/$VPNName/tinc.conf" \
   && chmod 600 "/etc/tinc/$VPNName/rsa_key.priv" \
