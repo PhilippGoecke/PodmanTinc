@@ -53,6 +53,8 @@ RUN if [ -f "/tmp/tinc-existing/rsa_key.priv" ]; then \
     cp /tmp/tinc-existing/rsa_key.priv "/etc/tinc/$VPNName/rsa_key.priv"; \
     [ -f "/tmp/tinc-existing/tinc.conf" ] && cp /tmp/tinc-existing/tinc.conf "/etc/tinc/$VPNName/tinc.conf"; \
     [ -f "/tmp/tinc-existing/hosts/$ThisClientName" ] && cp "/tmp/tinc-existing/hosts/$ThisClientName" "/etc/tinc/$VPNName/hosts/$ThisClientName"; \
+    [ -f "/tmp/tinc-existing/tinc-up" ] && cp /tmp/tinc-existing/tinc-up "/etc/tinc/$VPNName/tinc-up" && chmod 750 "/etc/tinc/$VPNName/tinc-up" && chown tinc:tinc "/etc/tinc/$VPNName/tinc-up"; \
+    [ -f "/tmp/tinc-existing/tinc-down" ] && cp /tmp/tinc-existing/tinc-down "/etc/tinc/$VPNName/tinc-down" && chmod 750 "/etc/tinc/$VPNName/tinc-down" && chown tinc:tinc "/etc/tinc/$VPNName/tinc-down"; \
   else \
     tincd -n "$VPNName" -K4096; \
   fi \
@@ -62,7 +64,7 @@ RUN if [ -f "/tmp/tinc-existing/rsa_key.priv" ]; then \
     done; \
   fi \
   && rm -rf /tmp/tinc-existing \
-  && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/hosts/$ThisClientName" "/etc/tinc/$VPNName/tinc.conf" \
+  && chown tinc:tinc "/etc/tinc/$VPNName/rsa_key.priv" "/etc/tinc/$VPNName/tinc.conf" "/etc/tinc/$VPNName/hosts/$ThisClientName"  "/etc/tinc/$VPNName/hosts/*" \
   && chmod 600 "/etc/tinc/$VPNName/rsa_key.priv" \
   && chmod 640 "/etc/tinc/$VPNName/tinc.conf" \
   && cat "/etc/tinc/$VPNName/hosts/$ThisClientName"
