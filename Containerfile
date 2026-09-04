@@ -31,21 +31,18 @@ RUN mkdir -p "/etc/tinc/$VPNName/hosts" \
   && chown tinc:tinc /run/tinc \
   && chmod 750 /run/tinc
 
-COPY --chown=tinc:tinc ./hosts/* "/etc/tinc/$VPNName/hosts/"
-RUN echo "Name = $ThisClientName\nDevice = /dev/net/tun\nInterface = VPN\n#DeviceType = tap\nMode = router\nAddressFamily = any\nBindToAddress = * 655" > /etc/tinc/$VPNName/tinc.conf && \
-  for peer in $VPNPeers; do \
+RUN echo "Name = $ThisClientName\nDevice = /dev/net/tun\nInterface = VPN\n#DeviceType = tap\nMode = router\nAddressFamily = any\nBindToAddress = * 655" > /etc/tinc/$VPNName/tinc.conf \
+  && for peer in $VPNPeers; do \
     echo "ConnectTo = $peer" >> /etc/tinc/$VPNName/tinc.conf; \
-  done
-RUN chown -R tinc:tinc "/etc/tinc/$VPNName" \
+  done \
+  && echo "Address = $ThisClientAddress\nPort = 655\n#TCPonly = yes\nSubnet = $ThisClientUniqueVpnIp/32" > "/etc/tinc/$VPNName/hosts/$ThisClientName" \
+  && echo "#!/bin/sh\nip link set \$INTERFACE up\nip addr add $ThisClientUniqueVpnIp/32 dev \$INTERFACE\nip route add $VPNSubnet dev \$INTERFACE" > "/etc/tinc/$VPNName/tinc-up" \
+  && echo "#!/bin/sh\nip route del $VPNSubnet dev \$INTERFACE\nip addr del $ThisClientUniqueVpnIp/32 dev \$INTERFACE\nip link set \$INTERFACE down" > "/etc/tinc/$VPNName/tinc-down" \
+  && chown -R tinc:tinc "/etc/tinc/$VPNName" \
   && chmod 700 "/etc/tinc/$VPNName" \
   && chmod 750 "/etc/tinc/$VPNName/hosts" \
   && chmod 640 "/etc/tinc/$VPNName/tinc.conf" \
-  && echo "Address = $ThisClientAddress\nPort = 655\n#TCPonly = yes\nSubnet = $ThisClientUniqueVpnIp/32" > "/etc/tinc/$VPNName/hosts/$ThisClientName" \
-  && echo "#!/bin/sh\nip link set \$INTERFACE up\nip addr add $ThisClientUniqueVpnIp/32 dev \$INTERFACE\nip route add $VPNSubnet dev \$INTERFACE" > "/etc/tinc/$VPNName/tinc-up" \
-  && chmod 750 "/etc/tinc/$VPNName/tinc-up" \
-  && echo "#!/bin/sh\nip route del $VPNSubnet dev \$INTERFACE\nip addr del $ThisClientUniqueVpnIp/32 dev \$INTERFACE\nip link set \$INTERFACE down" > "/etc/tinc/$VPNName/tinc-down" \
-  && chmod 750 "/etc/tinc/$VPNName/tinc-down" \
-  && chown tinc:tinc "/etc/tinc/$VPNName/tinc-up" "/etc/tinc/$VPNName/tinc-down"
+  && chmod 750 "/etc/tinc/$VPNName/tinc-up" "/etc/tinc/$VPNName/tinc-down"
 
 # copy existing keys/config if present, otherwise generate new certificates
 COPY --chown=tinc:tinc ./$VPNName/ /tmp/tinc-existing/
